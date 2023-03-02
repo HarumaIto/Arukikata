@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hanzyukukobo.arukikata.ui.gait_analysis.GaitAnalyzerViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:text="Step2: AIを使って歩行分析をします"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/outlineIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:indeterminate="false"
+            android:progress="100"
+            app:indicatorColor="@color/design_default_color_secondary_variant"
+            app:indicatorSize="203dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:trackThickness="2dp" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/inlineIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:indeterminate="false"
+            android:progress="100"
+            app:indicatorColor="@color/design_default_color_secondary_variant"
+            app:indicatorSize="168dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:trackThickness="2dp" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:indeterminate="false"
+            android:progress="@{viewModel.uiState.circleProgress}"
+            app:indicatorColor="@color/design_default_color_primary"
+            app:indicatorSize="200dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:trackThickness="16dp" />
+
+        <TextView
+            android:id="@+id/progressText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="@{viewModel.uiState.progressText}"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/progressIndicator"
+            app:layout_constraintEnd_toEndOf="@+id/progressIndicator"
+            app:layout_constraintStart_toStartOf="@+id/progressIndicator"
+            app:layout_constraintTop_toTopOf="@+id/progressIndicator" />
+
+        <Button
+            android:id="@+id/startMlButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:text="AI分析開始"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/design_default_color_secondary_variant"
+            android:enabled="@{viewModel.uiState.isStartButtonEnable}"
+            app:icon="@drawable/baseline_android_24"
+            app:iconTint="@color/design_default_color_secondary_variant"
+            app:strokeColor="@color/design_default_color_secondary_variant"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressIndicator" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/progressIndicator"
+            app:layout_constraintEnd_toEndOf="@+id/progressIndicator"
+            app:layout_constraintStart_toStartOf="@+id/progressIndicator"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+            <app.rive.runtime.kotlin.RiveAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:riveResource="@raw/load_animation_test"
+                app:riveAutoPlay="true"
+                app:riveLoop="LOOP" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
