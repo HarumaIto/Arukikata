@@ -55,17 +55,21 @@ class CameraPreviewViewModel : ViewModel() {
     private val fpsTimer = FpsTimer()
 
     private lateinit var bitmapToVideoEncoder: BitmapToVideoEncoder
-    val isRecording: Boolean get() {
-        return try {
-            bitmapToVideoEncoder.isEncodingStarted
-        } catch (e: UninitializedPropertyAccessException) {
-            false
+    val isRecording: Boolean
+        get() {
+            return try {
+                bitmapToVideoEncoder.isEncodingStarted
+            } catch (e: UninitializedPropertyAccessException) {
+                false
+            }
         }
-    }
+    private var videoWidth = 720
+    private var videoHeight = 1600
 
     fun startCamera(context: Context, binding: ActivityCameraPreviewBinding) {
         val previewView = binding.previewView
         cameraExecutor = Executors.newSingleThreadExecutor()
+        Log.i("camera preview view model", "width: ${previewView.width}, height: ${previewView.height}")
 
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
         cameraProviderFuture.addListener({
@@ -76,6 +80,13 @@ class CameraPreviewViewModel : ViewModel() {
                 preview.setSurfaceProvider(previewView.surfaceProvider)
 
                 val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+                cameraProvider.unbindAll()
+                cameraProvider.bindToLifecycle(
+                    binding.lifecycleOwner!!,
+                    cameraSelector,
+                    preview,
+                )
 
                 buildAnalysis(binding, cameraProvider, preview, cameraSelector)
             } catch (e: Exception) {
@@ -97,7 +108,8 @@ class CameraPreviewViewModel : ViewModel() {
         poseProcessor = PoseDetectorProcessor(
             detectorMode,
             uiState.value!!.upperAngleVisible,
-            uiState.value!!.lowerAngleVisible)
+            uiState.value!!.lowerAngleVisible
+        )
 
         val imageAnalysis = ImageAnalysis.Builder().build()
         imageAnalysis.setAnalyzer(
@@ -132,14 +144,20 @@ class CameraPreviewViewModel : ViewModel() {
         }
         cameraProvider.unbindAll()
 
-        cameraProvider.bindToLifecycle(binding.lifecycleOwner!!, cameraSelector, preview, imageAnalysis)
+        cameraProvider.bindToLifecycle(
+            binding.lifecycleOwner!!,
+            cameraSelector,
+            preview,
+            imageAnalysis
+        )
     }
 
     fun remakePoseProcessor() {
         poseProcessor = PoseDetectorProcessor(
             detectorMode,
             uiState.value!!.upperAngleVisible,
-            uiState.value!!.lowerAngleVisible)
+            uiState.value!!.lowerAngleVisible
+        )
     }
 
     fun changeAngleVisibility(view: View) {
@@ -157,14 +175,16 @@ class CameraPreviewViewModel : ViewModel() {
         }
     }
 
-    fun changeDetection(view: View) {
+    fun changeDetection(view: View?) {
         _uiState.value = _uiState.value?.let {
             it.copy(detectionState = !it.detectionState)
         }
-        if (_uiState.value!!.detectionState) {
-            Snackbar.make(view, "検出を有効化", Snackbar.LENGTH_SHORT).show()
-        } else {
-            Snackbar.make(view, "検出を無効化", Snackbar.LENGTH_SHORT).show()
+        if (view != null) {
+            if (_uiState.value!!.detectionState) {
+                Snackbar.make(view, "検出を有効化", Snackbar.LENGTH_SHORT).show()
+            } else {
+                Snackbar.make(view, "検出を無効化", Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -213,7 +233,14 @@ class CameraPreviewViewModel : ViewModel() {
         val name = "${Date().time}_Arkkt.mp4"
         val path = "/storage/emulated/0/Movies/$name"
         val file = File(path)
-        bitmapToVideoEncoder.startEncoding(width, height, file)
+        try {
+            // サイズが640*480じゃないと落ちる
+            // 原因は以下を出力しているところにあると思うが見つけられない
+            // D/skia: fStrides[0]:640, fStrides[1]:640, width: 640, height:480
+            bitmapToVideoEncoder.startEncoding(videoWidth, videoHeight, file)
+        } catch (e: java.lang.IllegalArgumentException) {
+            e.printStackTrace()
+        }
     }
 
     private fun insertBitmap(binding: ActivityCameraPreviewBinding, isOverlay: Boolean) {
@@ -221,11 +248,33 @@ class CameraPreviewViewModel : ViewModel() {
         val resultBitmap: Bitmap = if (isOverlay) {
             val overlayBitmap = binding.graphicOverlay.drawToBitmap()
 
-            val newBitmap = Bitmap.createBitmap(previewBitmap.width, previewBitmap.height, Bitmap.Config.ARGB_8888)
+            // リサイズ
+            val resizeScale: Double = if (overlayBitmap.width >= overlayBitmap.height) {
+                videoWidth.toDouble() / overlayBitmap.width
+            } else {
+                videoHeight.toDouble() / overlayBitmap.height
+            }
+            val resizedOverlayBitmap = Bitmap.createScaledBitmap(
+                overlayBitmap,
+                (overlayBitmap.width * resizeScale).toInt(),
+                (overlayBitmap.height * resizeScale).toInt(),
+                true)
+            val resizedPreviewBitmap = Bitmap.createScaledBitmap(
+                previewBitmap,
+                (previewBitmap.width * resizeScale).toInt(),
+                (previewBitmap.height * resizeScale).toInt(),
+                true,)
+
+            // startRecording時のエラーと同じ
+            val newBitmap = Bitmap.createBitmap(
+                videoWidth,
+                videoHeight,
+                Bitmap.Config.ARGB_8888
+            )
             val canvas = Canvas(newBitmap)
             canvas.apply {
-                drawBitmap(previewBitmap, 0f, 0f, Paint())
-                drawBitmap(overlayBitmap, 0f, 0f, Paint())
+                drawBitmap(resizedPreviewBitmap, 0f, 0f, Paint())
+                drawBitmap(resizedOverlayBitmap, 0f, 0f, Paint())
             }
             newBitmap
         } else {

@@ -2,7 +2,6 @@ package com.hanzyukukobo.arukikata.ui.realtime_analysis
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuInflater
 import android.view.MenuItem

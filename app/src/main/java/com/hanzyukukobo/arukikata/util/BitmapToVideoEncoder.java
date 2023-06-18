@@ -33,10 +33,9 @@ public class BitmapToVideoEncoder {
     private CountDownLatch mNewFrameLatch;
 
     private static final String MIME_TYPE = "video/avc"; // H.264 Advanced Video Coding
-    private static final int BIT_RATE = 16000000;
-    private static int FRAME_RATE = 30; // Frames per second
-
-    private static final int I_FRAME_INTERVAL = 1;
+    private static final int BIT_RATE = 20000000;
+    private static float FRAME_RATE = 30; // Frames per second
+    private static float I_FRAME_INTERVAL = 1;
 
     private int mGenerateIndex = 0;
     private int mTrackIndex;
@@ -53,6 +52,7 @@ public class BitmapToVideoEncoder {
     ) {
         mCallback = callback;
         FRAME_RATE = frameRate;
+        I_FRAME_INTERVAL = 1 / FRAME_RATE;
     }
 
     public boolean isEncodingStarted() {
@@ -89,10 +89,9 @@ public class BitmapToVideoEncoder {
 
         MediaFormat mediaFormat = MediaFormat.createVideoFormat(MIME_TYPE, width, height);
         mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, BIT_RATE);
-        mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, FRAME_RATE);
-        mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT,
-                MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar);
-        mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, I_FRAME_INTERVAL);
+        mediaFormat.setFloat(MediaFormat.KEY_FRAME_RATE, FRAME_RATE);
+        mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible);
+        mediaFormat.setFloat(MediaFormat.KEY_I_FRAME_INTERVAL, I_FRAME_INTERVAL);
         mediaCodec.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
         mediaCodec.start();
         try {
@@ -184,7 +183,7 @@ public class BitmapToVideoEncoder {
 
             long TIMEOUT_USEC = 500000;
             int inputBufIndex = mediaCodec.dequeueInputBuffer(TIMEOUT_USEC);
-            long ptsUsec = computePresentationTime(mGenerateIndex, FRAME_RATE);
+            long ptsUsec = computePresentationTime(mGenerateIndex, (int) FRAME_RATE);
             if (inputBufIndex >= 0) {
                 final ByteBuffer inputBuffer = mediaCodec.getInputBuffer(inputBufIndex);
                 inputBuffer.clear();

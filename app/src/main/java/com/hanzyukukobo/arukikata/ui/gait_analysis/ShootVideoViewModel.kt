@@ -3,7 +3,6 @@ package com.hanzyukukobo.arukikata.ui.gait_analysis
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
-import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.camera.core.CameraSelector
@@ -86,19 +85,17 @@ class ShootVideoViewModel @Inject constructor(
             isRecording = true
         )
 
-        // Create MediaStoreOutputOptions for our recorder
         val name = "${Date().time}_Arkkt.mp4"
         val contentValues = ContentValues().apply {
             put(MediaStore.Video.Media.DISPLAY_NAME, name)
         }
-        val mediaStoreOutput = MediaStoreOutputOptions.Builder(
-            context.contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-            .setContentValues(contentValues)
-            .build()
+        val outputOptions = MediaStoreOutputOptions.Builder(
+            context.contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        ).setContentValues(contentValues).build()
 
         // 2. Configure Recorder and Start recording to the mediaStoreOutput.
         recording = videoCapture.output
-            .prepareRecording(context, mediaStoreOutput)
+            .prepareRecording(context, outputOptions)
             .withAudioEnabled()
             .start(cameraExecutor, videoRecordEvent(context, onCompleteListener))
     }
