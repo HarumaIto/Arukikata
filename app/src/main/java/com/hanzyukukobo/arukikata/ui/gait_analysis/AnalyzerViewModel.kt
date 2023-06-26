@@ -1,6 +1,7 @@
 package com.hanzyukukobo.arukikata.ui.gait_analysis
 
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -75,17 +76,16 @@ class AnalyzerViewModel @Inject constructor(
     fun changeFragmentContainer(
         fragmentTransaction: FragmentTransaction,
         gaitAnalysisFragments: GaitAnalysisFragments,
-        onCompleteListener: OnCompleteListener,
-        onMoveRecording: OnMoveRecording? = null
+        onCompleteListener: OnCompleteListener
     ) {
         fragmentTransaction.also {
             it.replace(
                 R.id.fragmentContainer,
                 when (gaitAnalysisFragments) {
-                    GaitAnalysisFragments.VideoSelector -> VideoSelectorFragment(onCompleteListener, onMoveRecording!!)
+                    GaitAnalysisFragments.VideoSelector -> VideoSelectorFragment(onCompleteListener)
                     GaitAnalysisFragments.GaitAnalyzer -> GaitAnalyzerFragment(onCompleteListener)
                     GaitAnalysisFragments.GaitResult -> GaitResultFragment(onCompleteListener)
-                    GaitAnalysisFragments.ShootVideo -> ShootVideoFragment(onCompleteListener)
+                    else -> VideoSelectorFragment(onCompleteListener)
                 }
             )
             it.commit()

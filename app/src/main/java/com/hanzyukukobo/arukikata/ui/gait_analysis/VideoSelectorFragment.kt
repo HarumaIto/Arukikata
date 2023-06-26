@@ -2,6 +2,7 @@ package com.hanzyukukobo.arukikata.ui.gait_analysis
 
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -19,16 +20,12 @@ import androidx.media3.common.util.UnstableApi
 import com.google.android.material.snackbar.Snackbar
 import com.hanzyukukobo.arukikata.R
 import com.hanzyukukobo.arukikata.databinding.FragmentVideoSelectorBinding
+import com.hanzyukukobo.arukikata.ui.log.AnalysisLogActivity
 import dagger.hilt.android.AndroidEntryPoint
-
-interface OnMoveRecording {
-    fun startRecording()
-}
 
 @AndroidEntryPoint
 class VideoSelectorFragment constructor(
-    private val onCompleteListener: OnCompleteListener,
-    private val onMoveRecording: OnMoveRecording
+    private val onCompleteListener: OnCompleteListener
 ) : Fragment(), OnClickListener {
 
     private var _binding: FragmentVideoSelectorBinding? = null
@@ -100,7 +97,8 @@ class VideoSelectorFragment constructor(
         if (v == null) return
         when (v.id) {
             R.id.shootVideoButton -> {
-                onMoveRecording.startRecording()
+                val intent = Intent(activity!!.baseContext, ShootVideoActivity::class.java)
+                startActivity(intent)
             }
             R.id.selectVideoButton -> {
                 viewModel.pickVideoFromGallery(launcher)

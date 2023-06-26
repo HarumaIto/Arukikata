@@ -1,8 +1,10 @@
 package com.hanzyukukobo.arukikata.ui.gait_analysis
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.camera.core.CameraSelector
@@ -13,8 +15,6 @@ import androidx.camera.video.*
 import androidx.core.content.ContextCompat
 import androidx.core.util.Consumer
 import androidx.lifecycle.*
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import com.hanzyukukobo.arukikata.R
 import com.hanzyukukobo.arukikata.data.repositories.GaitAnalysisRepository
 import com.hanzyukukobo.arukikata.util.VideoMetaDataExtractor
@@ -22,6 +22,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import javax.inject.Inject
 
 data class ShootVideoUiStatus(
@@ -40,6 +42,8 @@ class ShootVideoViewModel @Inject constructor(
 
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var videoCapture: VideoCapture<Recorder>
+    private lateinit var outputOptions: MediaStoreOutputOptions
+    private lateinit var fileName: String
     private lateinit var recording: Recording
 
     fun startCamera(
@@ -79,17 +83,17 @@ class ShootVideoViewModel @Inject constructor(
     }
 
     @SuppressLint("MissingPermission")
-    fun startRecording(context: Context, onCompleteListener: OnCompleteListener) {
+    fun startRecording(context: Context) {
         _uiState.value = _uiState.value?.copy(
             buttonIcon = R.drawable.baseline_stop_circle_44,
             isRecording = true
         )
 
-        val name = "${Date().time}_Arkkt.mp4"
+        fileName = "${Date().time}_Arkkt.mp4"
         val contentValues = ContentValues().apply {
-            put(MediaStore.Video.Media.DISPLAY_NAME, name)
+            put(MediaStore.Video.Media.DISPLAY_NAME, fileName)
         }
-        val outputOptions = MediaStoreOutputOptions.Builder(
+        outputOptions = MediaStoreOutputOptions.Builder(
             context.contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI
         ).setContentValues(contentValues).build()
 
@@ -97,10 +101,11 @@ class ShootVideoViewModel @Inject constructor(
         recording = videoCapture.output
             .prepareRecording(context, outputOptions)
             .withAudioEnabled()
-            .start(cameraExecutor, videoRecordEvent(context, onCompleteListener))
+            .start(cameraExecutor, videoRecordEvent(context))
+
     }
 
-    private fun videoRecordEvent(context: Context, onCompleteListener: OnCompleteListener) =
+    private fun videoRecordEvent(context: Context) =
         Consumer<VideoRecordEvent> {
             if (it is VideoRecordEvent.Start) {
                 // Handle the start of a new active recording
@@ -110,12 +115,11 @@ class ShootVideoViewModel @Inject constructor(
                 val error = finalizeEvent.error
                 if (error == VideoRecordEvent.Finalize.ERROR_NONE) {
                     val uri = finalizeEvent.outputResults.outputUri
-                    Log.d("test", uri.path!!)
                     val videoInfo = VideoMetaDataExtractor.extract(context, uri)
                     gaitAnalysisRepository.setVideoInfo(videoInfo)
 
                     viewModelScope.launch(Dispatchers.Main) {
-                        onCompleteListener.onComplete(GaitAnalysisFragments.ShootVideo)
+                        showAlertDialog(context, uri)
                     }
                 }
             }
@@ -132,5 +136,29 @@ class ShootVideoViewModel @Inject constructor(
             buttonIcon = R.drawable.baseline_play_circle_filled_44,
             isRecording = false
         )
+    }
+
+    private fun uriToPath(uri: Uri, context: Context): String {
+        val contentResolver = context.contentResolver
+        val path: String = contentResolver.query(
+            uri, null, null, null, null).let {
+            it!!.moveToFirst()
+            val idx: Int = it.getColumnIndex(MediaStore.Video.Media.DATA)
+            val path = it.getString(idx)
+            it.close()
+            path
+        }
+
+        Log.d("test", "path : $path")
+        return path
+    }
+
+    private fun showAlertDialog(context: Context, uri: Uri) {
+        val path: String = uriToPath(uri, context)
+        AlertDialog.Builder(context)
+            .setTitle("動画を以下に保存しました")
+            .setMessage("ファイルの場所\n$path")
+            .setPositiveButton("OK", null)
+            .show()
     }
 }

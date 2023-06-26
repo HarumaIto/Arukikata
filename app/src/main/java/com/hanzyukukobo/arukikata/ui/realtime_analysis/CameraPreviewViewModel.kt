@@ -21,6 +21,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
+import com.hanzyukukobo.arukikata.R
 import com.hanzyukukobo.arukikata.data.PartialAngle
 import com.hanzyukukobo.arukikata.databinding.ActivityCameraPreviewBinding
 import com.hanzyukukobo.arukikata.util.BitmapToVideoEncoder
@@ -37,7 +38,9 @@ data class CameraPreviewUiState(
     val upperAngleVisible: Boolean = false,
     val lowerAngleVisible: Boolean = false,
     val fpsText: String = "fps",
-    val detectionState: Boolean = true
+    val detectionState: Boolean = true,
+    val recordStateVisibility: Int = View.INVISIBLE,
+    val recordButtonSrc: Int = R.drawable.baseline_play_circle_filled_44,
 )
 
 class CameraPreviewViewModel : ViewModel() {
@@ -54,12 +57,16 @@ class CameraPreviewViewModel : ViewModel() {
 
     private val fpsTimer = FpsTimer()
 
-    private lateinit var bitmapToVideoEncoder: BitmapToVideoEncoder
+    private var bitmapToVideoEncoder: BitmapToVideoEncoder? = null
     val isRecording: Boolean
         get() {
-            return try {
-                bitmapToVideoEncoder.isEncodingStarted
-            } catch (e: UninitializedPropertyAccessException) {
+            return if (bitmapToVideoEncoder != null) {
+                try {
+                    bitmapToVideoEncoder!!.isEncodingStarted
+                } catch (e: UninitializedPropertyAccessException) {
+                    false
+                }
+            } else {
                 false
             }
         }
@@ -227,8 +234,19 @@ class CameraPreviewViewModel : ViewModel() {
     fun startRecording(width: Int, height: Int, view: View) {
         bitmapToVideoEncoder = BitmapToVideoEncoder({
             // callback
-            Snackbar.make(view, "撮影した動画を保存しました", Snackbar.LENGTH_SHORT).show()
+            viewModelScope.launch(Dispatchers.Main) {
+                Snackbar.make(view, "撮影した動画を保存しました", Snackbar.LENGTH_SHORT).show()
+                _uiState.value = _uiState.value?.copy(
+                    recordButtonSrc = R.drawable.baseline_play_circle_filled_44,
+                    recordStateVisibility = View.INVISIBLE
+                )
+            }
         }, fpsTimer.latestFps)
+
+        _uiState.value = _uiState.value?.copy(
+            recordButtonSrc = R.drawable.baseline_stop_circle_44,
+            recordStateVisibility = View.VISIBLE
+        )
 
         val name = "${Date().time}_Arkkt.mp4"
         val path = "/storage/emulated/0/Movies/$name"
@@ -237,7 +255,7 @@ class CameraPreviewViewModel : ViewModel() {
             // サイズが640*480じゃないと落ちる
             // 原因は以下を出力しているところにあると思うが見つけられない
             // D/skia: fStrides[0]:640, fStrides[1]:640, width: 640, height:480
-            bitmapToVideoEncoder.startEncoding(videoWidth, videoHeight, file)
+            bitmapToVideoEncoder?.startEncoding(videoWidth, videoHeight, file)
         } catch (e: java.lang.IllegalArgumentException) {
             e.printStackTrace()
         }
@@ -280,12 +298,12 @@ class CameraPreviewViewModel : ViewModel() {
         } else {
             previewBitmap
         }
-        bitmapToVideoEncoder.queueFrame(resultBitmap)
+        bitmapToVideoEncoder?.queueFrame(resultBitmap)
     }
 
     fun stopRecording() {
         // Start時に指定したCallbackメソッドが呼ばれる
-        bitmapToVideoEncoder.stopEncoding()
+        bitmapToVideoEncoder?.stopEncoding()
     }
 
     fun release() {

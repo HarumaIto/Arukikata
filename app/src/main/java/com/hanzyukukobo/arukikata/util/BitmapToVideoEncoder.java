@@ -233,9 +233,13 @@ public class BitmapToVideoEncoder {
             Log.d(TAG, "RELEASE CODEC");
         }
         if (mediaMuxer != null) {
-            mediaMuxer.stop();
-            mediaMuxer.release();
-            mediaMuxer = null;
+            try {
+                mediaMuxer.stop();
+                mediaMuxer.release();
+                mediaMuxer = null;
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
             Log.d(TAG, "RELEASE MUXER");
         }
     }

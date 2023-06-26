@@ -1,6 +1,7 @@
 package com.hanzyukukobo.arukikata.util
 
 import android.content.Context
+import android.icu.number.IntegerWidth
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
@@ -14,17 +15,20 @@ class VideoMetaDataExtractor {
     companion object {
         fun extract(context: Context, uri: Uri): VideoInfo {
             // FFprobを使って動画の長さを取得する
-            val ffmpegPath = FFmpegKitConfig.getSafParameterForRead(context, uri)
-            val mediaInformation = FFprobeKit.getMediaInformation(ffmpegPath)
-            val information = mediaInformation.mediaInformation
+            //val ffmpegPath = FFmpegKitConfig.getSafParameterForRead(context, uri)
+            //val mediaInformation = FFprobeKit.getMediaInformation(ffmpegPath)
+            //val information = mediaInformation.mediaInformation
 
             // 小数点ありの秒単位のString型で取得できるのでマイクロ秒で整数化する
-            val duration = (information.duration.toDouble() * 1000000).toInt()
+            //val duration = (information.duration.toDouble() * 1000000).toInt()
 
             val retriever = MediaMetadataRetriever().apply {
                 setDataSource(context, uri)
+                //setDataSource(path)
             }
 
+            val duration = Integer.parseInt(
+                retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!)
             val rotation = Integer.parseInt(
                 retriever.extractMetadata(
                     MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION)!!)
@@ -50,7 +54,7 @@ class VideoMetaDataExtractor {
             val file = File(context.filesDir, "resultVideo.mp4")
 
             // 元のUriを保持しておくことで様々な形式への変換に対応できるようにする
-            return VideoInfo(uri, file, width, height, rotation, duration, frameCount)
+            return VideoInfo(uri, file,  width, height, rotation, duration, frameCount)
         }
     }
 }

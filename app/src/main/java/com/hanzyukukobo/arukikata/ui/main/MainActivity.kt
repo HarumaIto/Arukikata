@@ -1,22 +1,22 @@
 package com.hanzyukukobo.arukikata.ui.main
 
-import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.View.OnClickListener
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import android.util.Log
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.hanzyukukobo.arukikata.R
 import com.hanzyukukobo.arukikata.databinding.ActivityMainBinding
+import com.hanzyukukobo.arukikata.ui.gait_analysis.AnalyzerActivity
 import com.hanzyukukobo.arukikata.ui.log.AnalysisLogActivity
 import com.hanzyukukobo.arukikata.ui.realtime_analysis.CameraPreviewActivity
-import com.hanzyukukobo.arukikata.ui.gait_analysis.AnalyzerActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,8 +38,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickNextButto
         MainCard(
             "分析履歴",
             "保存してある分析結果の関節角度から求められるスコアを表示します",
-            R.drawable.text_recognition)
+            R.drawable.text_recognition),
+        MainCard(
+            "DPP Test",
+            "WiFi easy connectのテストボタンです",
+            R.drawable.baseline_android_24)
     )
+
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
+        if (result?.resultCode == Activity.RESULT_OK) {
+            Log.i("ddp result", result.data!!.toString())
+        }
+        Log.d("dpp result", "nannkarresultkita: ${result.toString()}")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +79,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickNextButto
             mainCards[2] -> {
                 val intent = Intent(this, AnalysisLogActivity::class.java)
                 startActivity(intent)
+            }
+            mainCards[3] -> {
+                // WifiDPP関連
+                val wifiManager: WifiManager = getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    if (wifiManager.isEasyConnectSupported) {
+                        val intent = Intent("android.settings.WIFI_DPP_ENROLLEE_QR_CODE_SCANNER")
+                        startForResult.launch(intent)
+                    }
+                } else {
+                    TODO("VERSION.SDK_INT < Q")
+                }
             }
         }
     }

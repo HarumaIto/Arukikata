@@ -1,5 +1,6 @@
 package com.hanzyukukobo.arukikata.ui.gait_analysis
 
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -16,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AnalyzerActivity : AppCompatActivity(),
-    OnClickListener, OnCompleteListener, OnMoveRecording {
+    OnClickListener, OnCompleteListener {
 
     private val viewModel: AnalyzerViewModel by viewModels()
 
@@ -36,7 +37,7 @@ class AnalyzerActivity : AppCompatActivity(),
         binding.restartPageButton.setOnClickListener(this)
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.fragmentContainer, VideoSelectorFragment(this, this))
+        fragmentTransaction.add(R.id.fragmentContainer, VideoSelectorFragment(this))
         fragmentTransaction.commit()
         viewModel.changeNavigationButtonVisibility(GaitAnalysisFragments.VideoSelector)
     }
@@ -69,18 +70,11 @@ class AnalyzerActivity : AppCompatActivity(),
         val fragment = GaitAnalysisFragments.values()[position]
         viewModel.changeNavigationButtonVisibility(fragment)
         viewModel.changeFragmentContainer(
-            supportFragmentManager.beginTransaction(), fragment, this, this)
+            supportFragmentManager.beginTransaction(), fragment, this)
     }
 
     override fun onComplete(gaitAnalysisFragments: GaitAnalysisFragments) {
         viewModel.setNextButtonEnable(true)
-    }
-
-    override fun startRecording() {
-        val fragment = GaitAnalysisFragments.ShootVideo
-        viewModel.changeNavigationButtonVisibility(fragment)
-        viewModel.changeFragmentContainer(
-            supportFragmentManager.beginTransaction(), fragment, this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

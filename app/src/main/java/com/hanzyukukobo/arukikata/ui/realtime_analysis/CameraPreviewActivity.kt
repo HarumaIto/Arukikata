@@ -2,6 +2,7 @@ package com.hanzyukukobo.arukikata.ui.realtime_analysis
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.MenuInflater
 import android.view.MenuItem

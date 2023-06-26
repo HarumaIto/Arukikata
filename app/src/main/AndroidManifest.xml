@@ -15,6 +15,10 @@
         android:name="android.hardware.camera.any"
         android:required="true"/>
 
+    <!-- WiFi DPP -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <application
         android:name=".ArukikataApplication"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,6 +28,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Arukikata"
+        android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
 
         <provider
@@ -40,8 +45,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <!-- WiFi DPP -->
+                <action android:name="android.settings.WIFI_DPP_ENROLLEE_QR_CODE_SCANNER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
 
             <meta-data
@@ -50,6 +57,7 @@
         </activity>
         <activity android:name=".ui.realtime_analysis.CameraPreviewActivity" />
         <activity android:name=".ui.gait_analysis.AnalyzerActivity" />
+        <activity android:name=".ui.gait_analysis.ShootVideoActivity" />
         <activity android:name=".ui.log.AnalysisLogActivity" />
     </application>
 </manifest>
