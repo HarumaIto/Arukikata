@@ -1,10 +1,7 @@
 package com.hanzyukukobo.arukikata.ui.main
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.net.wifi.WifiManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.ActivityResult
@@ -79,19 +76,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickNextButto
             mainCards[2] -> {
                 val intent = Intent(this, AnalysisLogActivity::class.java)
                 startActivity(intent)
-            }
-            mainCards[3] -> {
-                // WifiDPP関連
-                val wifiManager: WifiManager = getSystemService(Context.WIFI_SERVICE) as WifiManager
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    if (wifiManager.isEasyConnectSupported) {
-                        val intent = Intent("android.settings.WIFI_DPP_ENROLLEE_QR_CODE_SCANNER")
-                        startForResult.launch(intent)
-                    }
-                } else {
-                    TODO("VERSION.SDK_INT < Q")
-                }
             }
         }
     }
