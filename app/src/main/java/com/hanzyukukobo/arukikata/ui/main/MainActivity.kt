@@ -1,11 +1,7 @@
 package com.hanzyukukobo.arukikata.ui.main
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,19 +31,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickNextButto
         MainCard(
             "分析履歴",
             "保存してある分析結果の関節角度から求められるスコアを表示します",
-            R.drawable.text_recognition),
-        MainCard(
-            "DPP Test",
-            "WiFi easy connectのテストボタンです",
-            R.drawable.baseline_android_24)
+            R.drawable.text_recognition)
     )
-
-    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
-        if (result?.resultCode == Activity.RESULT_OK) {
-            Log.i("ddp result", result.data!!.toString())
-        }
-        Log.d("dpp result", "nannkarresultkita: ${result.toString()}")
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

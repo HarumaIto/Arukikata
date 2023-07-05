@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.hanzyukukobo.arukikata.R
 import com.hanzyukukobo.arukikata.data.AnalysisLogEntity
 import com.hanzyukukobo.arukikata.data.repositories.GaitAnalysisRepository
-import com.hanzyukukobo.arukikata.databinding.ActivityAnalysisLogBinding
-import com.hanzyukukobo.arukikata.domain.GetLogChartDataUseCase
+import com.hanzyukukobo.arukikata.ui.common_widget.DetailResultPreviewFragment
+import com.hanzyukukobo.arukikata.ui.common_widget.EasyResultPreviewFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,22 +18,42 @@ import java.util.*
 import javax.inject.Inject
 
 data class AnalysisLogUiState(
-    val adapter: LogListAdapter
+    val adapter: LogListAdapter,
+    val easyPreview:EasyResultPreviewFragment?,
+    val detailPreview: DetailResultPreviewFragment?
 )
 
 @HiltViewModel
 class AnalysisLogViewModel @Inject constructor(
     application: Application,
-    private val gaitAnalysisRepository: GaitAnalysisRepository,
-    private val getLogChartDataUseCase: GetLogChartDataUseCase
+    private val gaitAnalysisRepository: GaitAnalysisRepository
 ) : AndroidViewModel(application) {
 
     private val _uiState = MutableLiveData(
         AnalysisLogUiState(
-            LogListAdapter(
-                getApplication(), R.layout.log_list_item, arrayListOf())))
+            LogListAdapter(getApplication(), R.layout.log_list_item, arrayListOf()),
+            null,
+            null
+        ))
     val uiState: LiveData<AnalysisLogUiState>
         get() = _uiState
+
+    val isEasyPreview: Boolean get() = uiState.value?.easyPreview != null
+
+    fun changeFragment(easyPreview:EasyResultPreviewFragment?, detailPreview: DetailResultPreviewFragment?) {
+        _uiState.value = _uiState.value?.copy(
+            easyPreview = easyPreview,
+            detailPreview = detailPreview
+        )
+    }
+
+    fun buildCharts(itemName: String) {
+        if (isEasyPreview) {
+            uiState.value?.easyPreview!!.buildCharts(itemName)
+        } else {
+            uiState.value?.detailPreview!!.buildCharts(itemName)
+        }
+    }
 
     fun refreshAdapter() {
         viewModelScope.launch(Dispatchers.Main) {
@@ -58,13 +78,6 @@ class AnalysisLogViewModel @Inject constructor(
             }
 
             _uiState.value?.adapter?.addAll(listItems)
-        }
-    }
-
-    fun buildCharts(itemName: String, binding: ActivityAnalysisLogBinding) {
-        viewModelScope.launch {
-            binding.scoreChartsPreview.buildCharts(
-                itemName, getFramesChartDataUseCase = null, getLogChartDataUseCase)
         }
     }
 }

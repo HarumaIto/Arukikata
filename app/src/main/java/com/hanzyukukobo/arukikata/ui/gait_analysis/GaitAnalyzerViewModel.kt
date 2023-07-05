@@ -64,7 +64,11 @@ class GaitAnalyzerViewModel @Inject constructor(
         needUpDataSourceInfo = true
         val timePerFrame = (videoInfo.duration.toFloat()/1000000) / videoInfo.frameCount.toFloat()
 
-        _uiState.value = _uiState.value?.copy(isStartButtonEnable = false)
+        _uiState.value = _uiState.value?.copy(
+            isStartButtonEnable = false,
+            circleProgress = 10,
+            progressText = "10%"
+        )
 
         val bitmapToVideoEncoder = buildVideoEncoder(videoInfo, onCompleteListener)
 
@@ -100,7 +104,7 @@ class GaitAnalyzerViewModel @Inject constructor(
                                 updateProgressValues(100f)
                                 bitmapToVideoEncoder.stopEncoding()
                             } else {
-                                updateProgressValues(i.toFloat()/videoInfo.frameCount.toFloat() * 100)
+                                updateProgressValues(i.toFloat()/videoInfo.frameCount.toFloat() * 90 + 10)
                             }
                         },
                         onError = {

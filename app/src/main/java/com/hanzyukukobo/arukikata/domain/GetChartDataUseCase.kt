@@ -8,7 +8,6 @@ import javax.inject.Inject
 import kotlin.math.abs
 
 class GetChartDataUseCase @Inject constructor() {
-
     operator fun invoke(
         resultData: List<FrameEntity>,
         compareData: List<Map<String, Any>>,
@@ -43,42 +42,6 @@ class GetChartDataUseCase @Inject constructor() {
         }
         return listOf(x0, y0, x1, y1)
     }
-
-    /*
-    suspend operator fun invoke(context: Context, landmark: Int, refresh: Boolean): List<List<Double>> {
-            val allFrame = gaitAnalysisRepository.getAllFrame(refresh)
-            val compareData = compareDataRepository.getCompareData(context, refresh)
-
-            val compareDataList = compareDataToList(compareData, landmark)
-            val jointLandmarkData = framesToList(allFrame, landmark)
-            compareDataList[KEY_INDEXES] = normalizeList(compareDataList[KEY_INDEXES]!!)
-            jointLandmarkData[KEY_INDEXES] = normalizeList(jointLandmarkData[KEY_INDEXES]!!)
-
-            var x0 = compareDataList[KEY_INDEXES]!!
-            var x1 = jointLandmarkData[KEY_INDEXES]!!
-            var y0 = compareDataList[KEY_ANGLES]!!
-            var y1 = jointLandmarkData[KEY_ANGLES]!!
-
-            if (compareDataList[KEY_INDEXES]!!.size != jointLandmarkData[KEY_INDEXES]!!.size) {
-                if (compareDataList[KEY_INDEXES]!!.size > jointLandmarkData[KEY_INDEXES]!!.size) {
-                    val convertedData = convertToComputational(
-                        compareDataList,
-                        jointLandmarkData
-                    )
-                    x1 = convertedData[KEY_INDEXES]!!
-                    y1 = convertedData[KEY_ANGLES]!!
-                } else {
-                    val convertedData = convertToComputational(
-                        jointLandmarkData,
-                        compareDataList
-                    )
-                    x0 = convertedData[KEY_INDEXES]!!
-                    y0 = convertedData[KEY_ANGLES]!!
-                }
-            }
-            return listOf(x0, y0, x1, y1)
-    }
-     */
 
     private fun compareDataToList(compareData: List<Map<String, Any>>, landmark: Int): MutableMap<String, List<Double>> {
         val indexes = mutableListOf<Double>()

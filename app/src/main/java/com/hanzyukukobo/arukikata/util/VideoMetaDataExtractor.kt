@@ -15,20 +15,17 @@ class VideoMetaDataExtractor {
     companion object {
         fun extract(context: Context, uri: Uri): VideoInfo {
             // FFprobを使って動画の長さを取得する
-            //val ffmpegPath = FFmpegKitConfig.getSafParameterForRead(context, uri)
-            //val mediaInformation = FFprobeKit.getMediaInformation(ffmpegPath)
-            //val information = mediaInformation.mediaInformation
+            val ffmpegPath = FFmpegKitConfig.getSafParameterForRead(context, uri)
+            val mediaInformation = FFprobeKit.getMediaInformation(ffmpegPath)
+            val information = mediaInformation.mediaInformation
 
             // 小数点ありの秒単位のString型で取得できるのでマイクロ秒で整数化する
-            //val duration = (information.duration.toDouble() * 1000000).toInt()
+            val duration = (information.duration.toDouble() * 1000000).toInt()
 
             val retriever = MediaMetadataRetriever().apply {
                 setDataSource(context, uri)
-                //setDataSource(path)
             }
 
-            val duration = Integer.parseInt(
-                retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!)
             val rotation = Integer.parseInt(
                 retriever.extractMetadata(
                     MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION)!!)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -19,132 +19,35 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:text="Step3: 分析結果を表示します"
+            android:text="Step3: 分析結果"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ScrollView
+        <RelativeLayout
+            android:id="@+id/resultFragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="分析結果"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.media3.ui.AspectRatioFrameLayout
-                    android:id="@+id/aspectRationFrameLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4"
-                    app:resize_mode="fixed_width">
-
-                    <androidx.media3.ui.PlayerView
-                        android:id="@+id/videoView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView"
-                        app:show_shuffle_button="true"
-                        app:show_subtitle_button="true" />
-
-                </androidx.media3.ui.AspectRatioFrameLayout>
-
-                <com.hanzyukukobo.arukikata.util.ScoreChartsPreview
-                    android:id="@id/scoreChartsPreview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/aspectRationFrameLayout" />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:text="エクスポート"
-                    app:layout_constraintStart_toStartOf="@+id/scoreChartsPreview"
-                    app:layout_constraintTop_toBottomOf="@+id/scoreChartsPreview" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/scoreChartsPreview"
-                    app:layout_constraintStart_toStartOf="@+id/scoreChartsPreview"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6">
-
-                    <Button
-                        android:id="@+id/saveLogButton"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="left|center_vertical"
-                        android:text="結果をアプリ内に保存する"
-                        android:textColor="@color/design_default_color_secondary_variant"
-                        android:enabled="@{viewModel.uiState.saveLogButtonEnable}"
-                        app:iconTint="@color/design_default_color_secondary_variant"
-                        app:strokeColor="@color/design_default_color_secondary_variant"
-                        app:icon="@drawable/baseline_save_24" />
-
-                    <Button
-                        android:id="@+id/csvExportButton"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="left|center_vertical"
-                        android:text="関節角度のCSVファイルをダウンロード"
-                        android:textColor="@color/design_default_color_secondary_variant"
-                        app:icon="@drawable/baseline_analytics_24"
-                        app:iconTint="@color/design_default_color_secondary_variant"
-                        app:strokeColor="@color/design_default_color_secondary_variant"/>
-
-                    <Button
-                        android:id="@+id/videoExportButton"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="left|center_vertical"
-                        android:text="結果の動画をダウンロード"
-                        android:textColor="@color/design_default_color_secondary_variant"
-                        app:icon="@drawable/baseline_video_file_24"
-                        app:iconTint="@color/design_default_color_secondary_variant"
-                        app:strokeColor="@color/design_default_color_secondary_variant"/>
-
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </ScrollView>
+        <Button
+            android:id="@+id/resultChangePreviewButton"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="画面変更"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

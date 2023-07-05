@@ -255,7 +255,7 @@ class CameraPreviewViewModel : ViewModel() {
             // サイズが640*480じゃないと落ちる
             // 原因は以下を出力しているところにあると思うが見つけられない
             // D/skia: fStrides[0]:640, fStrides[1]:640, width: 640, height:480
-            bitmapToVideoEncoder?.startEncoding(videoWidth, videoHeight, file)
+            bitmapToVideoEncoder!!.startEncoding(videoWidth, videoHeight, file)
         } catch (e: java.lang.IllegalArgumentException) {
             e.printStackTrace()
         }

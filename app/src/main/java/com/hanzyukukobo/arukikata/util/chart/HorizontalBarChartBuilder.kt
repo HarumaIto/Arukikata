@@ -35,7 +35,12 @@ class HorizontalBarChartBuilder(
     fun build() {
         val entryList = mutableListOf<BarEntry>()
         for (i in xAxisValues.indices) {
-            entryList.add(BarEntry(xAxisValues[i].toFloat(), yAxisValues[i].value.toFloat()))
+            entryList.add(
+                BarEntry(
+                    xAxisValues[i].toFloat(),
+                    yAxisValues[i].value.toFloat()
+                )
+            )
         }
 
         val barDataSet = BarDataSet(entryList, "score")
