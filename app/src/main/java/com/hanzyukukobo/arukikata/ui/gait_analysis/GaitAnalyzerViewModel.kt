@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.os.Build
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -72,20 +73,26 @@ class GaitAnalyzerViewModel @Inject constructor(
 
         val bitmapToVideoEncoder = buildVideoEncoder(videoInfo, onCompleteListener)
 
+        Log.d("test", "framecount:${videoInfo.frameCount}")
         // 新しいスレッドでコルーチンを実行する
         viewModelScope.launch(Dispatchers.Default) {
             gaitAnalysisRepository.deleteAllFrame()
 
             for (i in 0 until videoInfo.frameCount) {
+                Log.d("test", "current:$i")
                 val bitmap = extractVideoFrames(context, videoInfo, i)
 
                 if (bitmap == null) {
+                    Log.d("test", "error handring")
+                    continue
+                    /*
                     // 何らかの影響で最後のフレームが取得できなかった場合
                     withContext(Dispatchers.Main) {
                         updateProgressValues(100f)
                         bitmapToVideoEncoder.stopEncoding()
                     }
                     return@launch
+                     */
                 }
 
                 poseProcessor.asyncProcessBitmap(bitmap)
@@ -101,6 +108,7 @@ class GaitAnalyzerViewModel @Inject constructor(
 
                             // 最後のフレームの処理が完了したらtrueでonCompleteが呼ばれる
                             if (i==videoInfo.frameCount-1) {
+                                Log.d("test", "endcount:$i")
                                 updateProgressValues(100f)
                                 bitmapToVideoEncoder.stopEncoding()
                             } else {

@@ -41,8 +41,8 @@ class VideoMetaDataExtractor {
                     retriever.extractMetadata(
                         MediaMetadataRetriever.METADATA_KEY_VIDEO_FRAME_COUNT)!!)
             } else {
-                // -1ではじかれるようにする
                 -1
+                TODO("// -1ではじかれるようにする")
             }
             retriever.release()
 

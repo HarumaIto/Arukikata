@@ -38,12 +38,4 @@ class GaitResultViewModel : ViewModel() {
             detailPreview = detailPreview
         )
     }
-
-    fun buildCharts(itemName: String) {
-        if (uiState.value?.easyPreview != null) {
-            uiState.value?.easyPreview!!.buildCharts(itemName)
-        } else {
-            uiState.value?.detailPreview!!.buildCharts(itemName)
-        }
-    }
 }
