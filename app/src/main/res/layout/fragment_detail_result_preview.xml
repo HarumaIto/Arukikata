@@ -61,8 +61,7 @@
                     <com.github.mikephil.charting.charts.HorizontalBarChart
                         android:id="@+id/jointsDifferenceChart"
                         android:layout_width="match_parent"
-                        android:layout_height="400dp"
-                        android:layout_marginLeft="8dp" />
+                        android:layout_height="400dp" />
                 </LinearLayout>
 
                 <HorizontalScrollView
@@ -173,10 +172,10 @@
                         android:enabled="@{viewModel.uiState.saveLogButtonEnable}"
                         android:gravity="left|center_vertical"
                         android:text="結果をアプリ内に保存する"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        android:textColor="@color/colorAccent"
                         app:icon="@drawable/baseline_save_24"
-                        app:iconTint="@color/design_default_color_secondary_variant"
-                        app:strokeColor="@color/design_default_color_secondary_variant" />
+                        app:iconTint="@color/colorAccent"
+                        app:strokeColor="@color/colorAccent" />
 
                     <Button
                         android:id="@+id/csvExportButton"
@@ -186,10 +185,10 @@
                         android:enabled="@{viewModel.uiState.csvLogButtonEnable}"
                         android:gravity="left|center_vertical"
                         android:text="関節角度のCSVファイルをダウンロード"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        android:textColor="@color/colorAccent"
                         app:icon="@drawable/baseline_analytics_24"
-                        app:iconTint="@color/design_default_color_secondary_variant"
-                        app:strokeColor="@color/design_default_color_secondary_variant" />
+                        app:iconTint="@color/colorAccent"
+                        app:strokeColor="@color/colorAccent" />
 
                     <Button
                         android:id="@+id/videoExportButton"
@@ -199,10 +198,10 @@
                         android:enabled="@{viewModel.uiState.videoExportButtonEnable}"
                         android:gravity="left|center_vertical"
                         android:text="結果の動画をダウンロード"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        android:textColor="@color/colorAccent"
                         app:icon="@drawable/baseline_video_file_24"
-                        app:iconTint="@color/design_default_color_secondary_variant"
-                        app:strokeColor="@color/design_default_color_secondary_variant" />
+                        app:iconTint="@color/colorAccent"
+                        app:strokeColor="@color/colorAccent" />
 
                 </LinearLayout>
 

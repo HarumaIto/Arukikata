@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF6200EE</color>
+    <color name="colorPrimary">#FFBB86FC</color>
     <color name="colorPrimaryDark">#FF3700B3</color>
-    <color name="colorAccent">#FF018786</color>
-    <color name="colorAccentDirk">#FF03DAC5</color>
+    <color name="colorAccent">#FF03DAC5</color>
+    <color name="colorAccentDirk">#FF018786</color>
     <color name="colorTransparent">#00000000</color>
-    <color name="textColor">@color/black</color>
-    <color name="textColorPrimary">@color/black</color>
+    <color name="textColor">#FFFFFF</color>
+    <color name="textColorPrimary">#FFFFFF</color>
     <color name="textColorSecondary">#808080</color>
-    <color name="colorBackground">#DFDFDF</color>
+    <color name="colorBackground">#313131</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

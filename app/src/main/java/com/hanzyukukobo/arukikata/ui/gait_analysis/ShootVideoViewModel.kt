@@ -7,6 +7,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.core.Preview.SurfaceProvider
@@ -28,7 +29,8 @@ import javax.inject.Inject
 
 data class ShootVideoUiStatus(
     val buttonIcon: Int = R.drawable.baseline_play_circle_filled_44,
-    val isRecording: Boolean = false
+    val isRecording: Boolean = false,
+    val recordStateVisibility: Int = View.INVISIBLE,
 )
 
 @HiltViewModel
@@ -86,7 +88,8 @@ class ShootVideoViewModel @Inject constructor(
     fun startRecording(context: Context) {
         _uiState.value = _uiState.value?.copy(
             buttonIcon = R.drawable.baseline_stop_circle_44,
-            isRecording = true
+            isRecording = true,
+            recordStateVisibility = View.VISIBLE
         )
 
         fileName = "${Date().time}_Arkkt.mp4"
@@ -134,7 +137,8 @@ class ShootVideoViewModel @Inject constructor(
         recording.stop()
         _uiState.value = _uiState.value?.copy(
             buttonIcon = R.drawable.baseline_play_circle_filled_44,
-            isRecording = false
+            isRecording = false,
+            recordStateVisibility = View.INVISIBLE
         )
     }
 

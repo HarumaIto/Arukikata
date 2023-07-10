@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="min"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="#191C1E"
+        android:textColor="@color/textColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:text="max"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="#191C1E"
+        android:textColor="@color/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

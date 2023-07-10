@@ -13,7 +13,7 @@
         android:padding="5dp"
         android:text="Name Text"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#000" />
+        android:textColor="@color/textColor" />
 
     <TextView
         android:id="@+id/date"

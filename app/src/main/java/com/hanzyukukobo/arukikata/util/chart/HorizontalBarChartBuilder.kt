@@ -1,5 +1,9 @@
 package com.hanzyukukobo.arukikata.util.chart
 
+import android.app.Application
+import android.content.res.Resources.Theme
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -44,6 +48,9 @@ class HorizontalBarChartBuilder(
         }
 
         val barDataSet = BarDataSet(entryList, "score")
+        barDataSet.apply {
+            color = Color.GREEN
+        }
         val barDatasets = arrayListOf<IBarDataSet>(barDataSet)
         val barData = BarData(barDatasets)
         barData.apply {

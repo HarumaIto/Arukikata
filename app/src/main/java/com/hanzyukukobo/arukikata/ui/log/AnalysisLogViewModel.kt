@@ -19,6 +19,7 @@ import javax.inject.Inject
 
 data class AnalysisLogUiState(
     val adapter: LogListAdapter,
+    val changeButtonText: String,
     val easyPreview:EasyResultPreviewFragment?,
     val detailPreview: DetailResultPreviewFragment?
 )
@@ -29,9 +30,15 @@ class AnalysisLogViewModel @Inject constructor(
     private val gaitAnalysisRepository: GaitAnalysisRepository
 ) : AndroidViewModel(application) {
 
+    companion object {
+        private const val detailText = "詳しくみる"
+        private const val easyText = "簡単にみる"
+    }
+
     private val _uiState = MutableLiveData(
         AnalysisLogUiState(
             LogListAdapter(getApplication(), R.layout.log_list_item, arrayListOf()),
+            detailText,
             null,
             null
         ))
@@ -42,6 +49,7 @@ class AnalysisLogViewModel @Inject constructor(
 
     fun changeFragment(easyPreview:EasyResultPreviewFragment?, detailPreview: DetailResultPreviewFragment?) {
         _uiState.value = _uiState.value?.copy(
+            changeButtonText = if (isEasyPreview) easyText else detailText,
             easyPreview = easyPreview,
             detailPreview = detailPreview
         )

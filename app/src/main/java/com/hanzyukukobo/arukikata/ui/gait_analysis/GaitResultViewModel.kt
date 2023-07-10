@@ -7,13 +7,21 @@ import com.hanzyukukobo.arukikata.ui.common_widget.DetailResultPreviewFragment
 import com.hanzyukukobo.arukikata.ui.common_widget.EasyResultPreviewFragment
 
 data class GaitResultUiState(
+    val changeButtonText: String,
     val easyPreview:EasyResultPreviewFragment?,
     val detailPreview: DetailResultPreviewFragment?
 )
 
 class GaitResultViewModel : ViewModel() {
+
+    companion object {
+        private const val detailText = "詳しくみる"
+        private const val easyText = "簡単にみる"
+    }
+
     private val _uiState = MutableLiveData(
         GaitResultUiState(
+            detailText,
             null,
             null
         )
@@ -25,6 +33,7 @@ class GaitResultViewModel : ViewModel() {
 
     fun changeFragment(easyPreview: EasyResultPreviewFragment?, detailPreview: DetailResultPreviewFragment?) {
         _uiState.value = _uiState.value?.copy(
+            changeButtonText = if (isEasyPreview) easyText else detailText,
             easyPreview = easyPreview,
             detailPreview = detailPreview
         )

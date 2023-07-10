@@ -21,7 +21,6 @@
             android:layout_marginTop="32dp"
             android:text="Step1: 使用する動画をセットします"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,10 +45,10 @@
                 android:layout_weight="1"
                 android:gravity="left|center_vertical"
                 android:text="動画を撮影"
-                android:textColor="@color/design_default_color_secondary_variant"
+                android:textColor="@color/colorAccent"
                 app:icon="@drawable/baseline_video_camera_front_24"
-                app:iconTint="@color/design_default_color_secondary_variant"
-                app:strokeColor="@color/design_default_color_secondary_variant" />
+                app:iconTint="@color/colorAccent"
+                app:strokeColor="@color/colorAccent" />
 
             <Button
                 android:id="@+id/selectVideoButton"
@@ -60,10 +59,10 @@
                 android:layout_weight="1"
                 android:gravity="left|center_vertical"
                 android:text="動画を選択"
-                android:textColor="@color/design_default_color_secondary_variant"
+                android:textColor="@color/colorAccent"
                 app:icon="@drawable/baseline_video_file_24"
-                app:iconTint="@color/design_default_color_secondary_variant"
-                app:strokeColor="@color/design_default_color_secondary_variant" />
+                app:iconTint="@color/colorAccent"
+                app:strokeColor="@color/colorAccent" />
         </LinearLayout>
 
         <TextView
@@ -95,7 +94,6 @@
                 app:show_shuffle_button="true"
                 app:show_subtitle_button="true" />
         </androidx.media3.ui.AspectRatioFrameLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
