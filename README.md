@@ -1,50 +1,50 @@
-アプリケーション紹介資料
+# アプリケーション紹介資料
 
-このアプリは主に高齢者向けに作られたアプリで、リアルタイムで姿勢推定や動画からの歩行分析が できます。マーカーレスで無料であり、一般の人々にも使いやすいアプリケーションを目指しました。
+このアプリは主に高齢者向けに作られたアプリで、リアルタイムで姿勢推定や動画からの歩行分析ができます。マーカーレスで無料であり、一般の人々にも使いやすいアプリケーションを目指しました。
 
-ホーム画面 
+## ホーム画面  
+・リアルタイム検出  
+カメラを使用してマーカーレスで姿勢推定を行う。
 
-・リアルタイム検出![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.001.jpeg)![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.002.png)![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.003.png)
+・歩行分析  
+新たに撮影した動画又は端末に保存されている動画を使用して歩行分析を行う。
 
-カメラを使用してマーカー レスで姿勢推定を行う。
+・分析履歴  
+保存された分析結果やスコアを表示し、過去の歩行分析結果が確認できる。
 
-・歩行分析![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.004.png)![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.005.png)
+![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.001.jpeg)
+![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.006.jpeg)  
 
-新たに撮影した動画又は端 末に保存されている動画を 使用して歩行分析を行う。
+## リアルタイム検出  
+・フレームレートの表示  
 
-・分析履歴![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.006.jpeg)![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.007.png)![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.008.png)
+・姿勢推定  
+マーカーレスで姿勢推定を行う。 
 
-保存された分析結果やスコ アを表示し、過去の歩行分 析結果が確認できる。
-
-リアルタイム検出 
-
-・フレームレートの表示![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.009.jpeg)![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.010.png)
-
-・姿勢推定![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.011.png)
-
-マーカーレスで姿勢推定を 行う。 
-
-・動画の撮影![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.012.png)![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.013.png)
+・動画の撮影
 
 ・検出の有無
 
 ・関節角度の表示
 
-歩行分析 
+![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.009.jpeg)
 
-動画の撮影 ![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.014.jpeg)![ref1]![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.016.jpeg)もしくは選択 ![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.017.jpeg)
+## 歩行分析 
+・動画の撮影もしくは選択  
 
-棒グラフや 線グラフの表示![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.018.png)![ref1]
+・棒グラフや線グラフの表示
 
-・結果の保存、エクスポート![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.019.png)
+・結果の保存、エクスポート
 
-分析結果の 表示 ![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.020.png)
+・分析結果の表示 
 
-分析履歴 
+![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.014.jpeg)
+![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.017.jpeg) 
 
-履歴の表示![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.021.jpeg)![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.022.png)
+## 分析履歴 
+・履歴の表示  
 
-スコアを部位ごと ![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.023.png)で分かりやすく
-5 
+・スコアを部位ごとで分かりやすく
 
-[ref1]: images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.015.png
+![](images/Aspose.Words.116ec9e7-1ffe-4d48-83e0-76b060bb2a44.021.jpeg)  
+
